@@ -43,20 +43,20 @@ public class JDBCdelete {
 	    	  int result = stmt.executeUpdate(sql);
 	    	  
 	    	  if(result == 1 ) {
-	    		  System.out.println("삭제 성공");
+	    		  System.out.println(id +"(이)가 삭제되었습니다.");
 	    		  
 	    	  }else {
-	    		  System.out.println("삭제실패");
+	    		  System.out.println(id + "삭제실패"); 
 	    	  }
 	      }catch (ClassNotFoundException cnfe){
-	    	  System.out.println("드라이버를 로드하지 못함" + cnfe.toString());
+	    	  System.out.println("드라이버를 로드하지 못했습니다." + cnfe.toString());
 	      }catch (SQLException sqle) {
 			System.out.println("DB 연결 or SQL Error " + sqle.toString());
 	      } catch (Exception e) {
-			e.printStackTrace();
-	      }finally {
+			e.printStackTrace(); //오류 출력
+	      }finally { 
 			try {
-				if(conn != null) conn.close();
+				if(conn != null) conn.close(); 
 				if(stmt != null) stmt.close();
                 
 			}catch (Exception e2) {
