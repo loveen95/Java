@@ -38,7 +38,18 @@ public class join_ok extends HttpServlet {
 		String phone1 = request.getParameter("phone1");
 		String phone2 = request.getParameter("phone2");
 		String gender = request.getParameter("gender");
+		
+		//DAO 객체 생성
+		MemberDAO dao = MemberDAO.getInstance();
+		//VO 객체 생성
+		MemberVO vo = new MemberVO(id, pw, name, phone1, phone2, email,gender );
+		
+		//DAO에 join 메서드를 사용	
+		int result = dao.join(vo);
+		
+	
 		//2. DB 연동 처리	
+		/*
 		String url = "jdbc:oracle:thin:@localhost:1521/XEPDB1";
 	    String driver = "oracle.jdbc.driver.OracleDriver";
 	    String uid = "myjsp";
@@ -66,14 +77,19 @@ public class join_ok extends HttpServlet {
 	    	stmt.setString(7, gender);    
 	    	
 	    	int result = stmt.executeUpdate();
-	    	
+	    	*/
+		
 	    	if(result == 1 ) {
 	    		response.sendRedirect("join_success.jsp");
 	    	}else {
 	    		response.sendRedirect("join_fail.jsp");
 	    	}
+	}
+}
+
+	
 	    	
-	    }catch(ClassNotFoundException cnfe){
+	    /*}catch(ClassNotFoundException cnfe){
 	    	System.out.println("드라이버 로딩 실패");
 	    	
 	    }catch (SQLException sqle) {
@@ -95,7 +111,7 @@ public class join_ok extends HttpServlet {
 	}
 
 }			
-		
+		*/
 		
 		//3. 처리결과에 따른 뷰를 선택
 		//   성공 : Success -> 성공 메세지를 출력

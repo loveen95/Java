@@ -25,7 +25,7 @@ public class JDBCPinsert {
 	      String password = "myjsp";
 	      
 	      Connection conn = null;
-	      PreparedStatement pstmt = null;
+	      PreparedStatement pstmt = null; //preparedStatement 는 sql문을 단순히 하기위해서 사용한다.
 	      
 	      String sql = "insert into member values(?,?,?,?)";
 	      
@@ -37,13 +37,13 @@ public class JDBCPinsert {
 	    	  pstmt = conn.prepareStatement(sql);
 	    	  //pstmt 객체에 값을 설정시setString ,setInt, setDouble,,,,,
 	    	  // 값을 불러올때엔 getString , getInt, getDouble,,,,, 
-	    	  pstmt.setString(1, id);
-	    	  pstmt.setString(2, pw);
+	    	  pstmt.setString(1, id); //인덱스를 이용한다(1번부터 시작) 
+	    	  pstmt.setString(2, pw);  
 	    	  pstmt.setString(3, name);
 	    	  pstmt.setString(4, email);
 	    	  
-	    	  //pstmt 실행(성공시 1 실패시 0)
-	    	 int result = pstmt.executeUpdate(); //주의!!!!!인자로 SQL로 전달하지 않는다.
+	    	  //pstmt 실행(성공시 1 실패시 0)  delete,update,insert 는 executeUpdate를 사용한다.
+	    	 int result = pstmt.executeUpdate(); //주의!!!!!인자로 SQL로 전달하지 않는다. 
 	    	  if(result ==1) {
 	    		  System.out.println("입력성공");
 	    	  }else {

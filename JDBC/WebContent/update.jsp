@@ -1,17 +1,29 @@
+<%@page import="com.ok.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
     <%
 
          String id = (String)session.getAttribute("id"); //아이디만 세션에 저장했기 때문에 
-         
-         String pw = (String)request.getAttribute("user_pw");
-         String name = (String)request.getAttribute("user_name");
-         String phone1 = (String)request.getAttribute("user_phone1");
-         String phone2 = (String)request.getAttribute("user_phone2");
-         String email = (String)request.getAttribute("user_email");
-         String gender = (String)request.getAttribute("user_gender");
-    
+
+    	//VO를 이용한 값 바꾸기
+    	MemberVO vo = (MemberVO)request.getAttribute("vo");
+    	System.out.println(vo.getId());
+    	System.out.println(vo.getPw());
+    	System.out.println(vo.getName());
+    	System.out.println(vo.getPhone1());
+    	System.out.println(vo.getPhone2());
+    	System.out.println(vo.getEmail());
+    	System.out.println(vo.getGender());
+    	
+      
+        String pw = vo.getPw();
+        String name = vo.getName();
+        String phone1 = vo.getPhone1();
+        String phone2 = vo.getPhone2();
+        String email = vo.getEmail();
+        String gender = vo.getGender();
+  
     %>
 <!DOCTYPE html>
 <html>

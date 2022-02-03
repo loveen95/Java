@@ -26,19 +26,18 @@ public class login_ok extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		doGet(request, response);
+	
 		request.setCharacterEncoding("utf-8");
 		String id = request.getParameter("id");
 		String pw = request.getParameter("pw");
 		
 		
-		
+		/*
 		String url = "jdbc:oracle:thin:@localhost:1521/XEPDB1";
 		String user = "myjsp";
 		String password = "myjsp";
@@ -60,16 +59,21 @@ public class login_ok extends HttpServlet {
 		
 		
 		rs = pstmt.executeQuery();
+		*/
 		
-		if (rs.next()) { 
+		//DAO객체생성 
+		MemberDAO dao = MemberDAO.getInstance();
+		
+	    int result = dao.login(id, pw);
+	    
+		if (result==1) { 
 			HttpSession session = request.getSession(); //session 객체 생성
-			session.setAttribute("id", id);
-			
+			session.setAttribute("id", id);	
 			response.sendRedirect("mypage.jsp");
 		}else {
 			response.sendRedirect("login_fail.jsp");
 		}
-		
+		/*
 		}catch (Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -82,7 +86,7 @@ public class login_ok extends HttpServlet {
 				
 			}
 		}
-		
+		*/
 	}
 
 }
