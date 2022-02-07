@@ -1,7 +1,6 @@
 package com.ok;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +20,7 @@ public class MemberDAO {
 	 * 
 	 * */
 	private DataSource ds;  //데이터 소스 객체 생성
-	private Context ct;
+	private Context ct; //javax naming.* 선언
 	
 	
 	//1. 스스로 객체를 멤버변수로 선언하고, 1개로 제한
@@ -31,15 +30,16 @@ public class MemberDAO {
 	private MemberDAO() {
 		//생성자가 한번 동작 할때에 다음 내용을 처리....
 		try {
-			ct = new InitialContext(); //이니셜 컨텍스트 객체 생성
+			ct = new InitialContext(); //이니셜 컨텍스트 객체 생성 , 초기화
 			ds = (DataSource)ct.lookup("java:comp/env/jdbc/oracle"); // 이니셜 컨텍스트로 부터 찾음/
-		}catch (Exception e) {
-			e.printStackTrace();
+					//캐스팅 
+		}catch (Exception e) {             //자바  환경설정에서 jdbc /oracle 을 찾는다. 
+			e.printStackTrace(); 
 		}
 	}
 	// 3. 외부에서 객체를 요구할때 getter 매서드만 써서 반환
 	public static MemberDAO getInstance() {  
-		return instance; 
+		return instance;                        
 	}
 	//DB연동을 위한 필요한 변수와 객체를 선언
 	
@@ -61,10 +61,10 @@ public class MemberDAO {
 			//Connection 객체 생성
 			
 			//conn = DriverManager.getConnection(url, user, password);
-			conn = ds.getConnection();
+			conn = ds.getConnection(); //a.k.a API 
 			
 			//PreparedStatement 객체 생성
-			pstmt = conn.prepareStatement(sql);
+			pstmt = conn.prepareStatement(sql);   
 			
 			pstmt.setString(1, vo.getId());
 			pstmt.setString(2, vo.getPw());
