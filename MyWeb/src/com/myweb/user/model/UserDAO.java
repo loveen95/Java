@@ -207,7 +207,7 @@ public class UserDAO {
 			
 		return result;
 		
-	}
+	}  //회원 정보 수정 업데이트
 	public int update(UserVO vo) {
 		int result = 0;
 		
@@ -235,9 +235,28 @@ public class UserDAO {
 		
 		return result;
 		
+	} //회원삭제
+	public int delete(String id) {
+		int result = 0;
+		
+		String sql = "delete from users where id = ?"; 
+		
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, id);
+			
+			result = pstmt.executeUpdate();
+			
+		}catch (Exception e) {
+			
+		}finally {
+			JdbcUtil.close(conn, pstmt, rs);
+		}
+		return result;
+
 	}
-	
-	
 }
 
 
