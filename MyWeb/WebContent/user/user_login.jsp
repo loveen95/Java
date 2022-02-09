@@ -5,7 +5,7 @@
     <div class="address-bar">Welcome to MyWorld</div>
     <%@ include file = "../include/_header.jsp" %>
 <body>
-<h2>로그인 페이지</h2>
+<h2 align="center">로그인 </h2>
 <hr>
 <!-- 1. Myweb 사이트와 연동 되어야 한다.
 	 2. 로그인시 필요한 아이디와 비밀번호를 입력 받게 설정

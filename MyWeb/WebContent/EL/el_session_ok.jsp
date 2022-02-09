@@ -13,4 +13,4 @@
 	이메일 : ${sessionScope.vo.email} <br>
 	이름 : ${applicationScope.admin} <br>
 </body>
-</html>
+</html> 

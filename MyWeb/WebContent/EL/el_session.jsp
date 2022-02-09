@@ -10,10 +10,7 @@
     	session.setAttribute("vo", vo);
     	
     	application.setAttribute("admin", "이윤빈");
-    	
-    
-    
-    
+
     %>
 <!DOCTYPE html>
 <html>

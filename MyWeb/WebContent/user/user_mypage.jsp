@@ -36,7 +36,9 @@
 <div align="center">
 <h2>MyPage</h2>
 <hr>
- <%=id %> 와 (<%=name %>) 님의 회원정보 관리합니다. 
+ ${sessionScope.user_id } 와 ${sessionScope.user_name }님의 회원정보 관리합니다. <br>
+ 
+<!--   <%=id %> 와 (<%=name %>) 님의 회원정보 관리합니다. -->
 
 <hr>
 <input type="button" value="비밀번호 변경" class="btn btn-default" onclick="location.href='user_change_pw.jsp'">
