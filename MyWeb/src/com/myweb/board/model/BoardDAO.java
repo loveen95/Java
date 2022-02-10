@@ -95,6 +95,102 @@ public class BoardDAO {
 		return list;	
 	
 	}
+	public BoardVO getContent(String num) {
+		BoardVO vo = null;
+		
+		String sql = "select * from board where num=?";
+		
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, num);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+			int num1 = rs.getInt("num");
+			String title = rs.getString("title");
+			String writer = rs.getString("writer");
+			int hit = rs.getInt("hit");
+			String content = rs.getString("content");
+			Timestamp regdate = rs.getTimestamp("regdate");
+			
+			vo = new BoardVO(num1, writer, title, content, regdate, hit);
+	
+			}
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			JdbcUtil.close(conn, pstmt, rs);
+		}
+		
+		return vo;
+	}
+	public void update(String num, String title, String content) {
+	
+		
+		String sql = "update board set title=?, content=? where num=?";
+		
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, title);
+			pstmt.setString(2, content);
+			pstmt.setInt(3, Integer.parseInt(num)); 
+			
+			pstmt.executeUpdate();
+			
+		}catch (Exception e) {		
+			e.printStackTrace();
+		}finally {
+			JdbcUtil.close(conn, pstmt, rs);
+		}
+
+	}
+	//게시글 삭제 반환값 X
+	public void delete(String num) {
+
+		String sql = "delete from board where num=?";
+
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, num);
+		
+			pstmt.executeUpdate();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			JdbcUtil.close(conn, pstmt, rs);
+		}
+
+		
+	}
+	public void upHit(String num) {
+		
+		String sql = "Update board set hit = hit + 1 where num=?";
+		
+		try {
+			conn = ds.getConnection();
+			pstmt= conn.prepareStatement(sql);
+			
+			pstmt.setString(1, num);
+			
+			int result = pstmt.executeUpdate();
+			
+			System.out.println(result);
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			JdbcUtil.close(conn, pstmt, rs);
+		}
+	}
 	
 }
 

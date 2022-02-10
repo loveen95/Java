@@ -4,7 +4,7 @@
     pageEncoding="UTF-8"%>
     
     
-    <script>
+    <script type="text/javascript">
 <%
 
 
@@ -53,8 +53,6 @@
 	   
    <%}%>
 
-    
-
-  
+   
 %>
   </script>

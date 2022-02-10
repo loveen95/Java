@@ -161,7 +161,7 @@ public class UserDAO {
         		 String address = rs.getString("address");
         		 Timestamp regdate =rs.getTimestamp("regdate");
         		 
-        		 vo = new UserVO(id1, null, name, email, address, regdate);
+        		 vo = new UserVO(id, null, name, email, address, regdate);
         
         	 }else {
         		 

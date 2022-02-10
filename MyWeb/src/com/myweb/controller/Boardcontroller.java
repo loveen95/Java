@@ -9,9 +9,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.myweb.board.service.ContentServiceImpl;
+import com.myweb.board.service.DeleteServiceImpl;
 import com.myweb.board.service.GetListServiceImpl;
 import com.myweb.board.service.IBoardService;
 import com.myweb.board.service.RegisterServiceImpl;
+//컨트롤러는 모델이나 view에대해서 알고 있어야 한다.
+import com.myweb.board.service.UpdateServiceImpl;
 
 
 @WebServlet("*.board")
@@ -66,8 +70,51 @@ public class Boardcontroller extends HttpServlet {
 			service.execute(request, response);
 			response.sendRedirect("/MyWeb/board/board_list.jsp");
 			
-		}
+		}else if(command.equals("/board/content.board")) {
+			//글 보기(상세보기)
+			service = new ContentServiceImpl();
+			service.execute(request, response);
+			RequestDispatcher dp = request.getRequestDispatcher("board_content.jsp"); 
+			dp.forward(request, response);
+			
+		}else if(command.equals("/board/modify.board")) {
+			//글 수정 뷰를 제공합니다. (수정화면 요청)
+			service = new ContentServiceImpl();
+			service.execute(request, response);
+			RequestDispatcher dp = request.getRequestDispatcher("board_modify.jsp"); 
+			dp.forward(request, response);
 		
+		}else if(command.equals("/board/update.board")) {
+			/*1. UpdateServiceImpl 을 생성
+			 *2. 서비스 영역에서 num, title, content 를 받아서, Update()메서드를 실행 
+			 *3. DAO의 업데이트 메소드에서 update구문으로 데이터를 수정해준다.
+			 *4. 페이지이동을 상세보기 화면으로 연결(이때 필요한 값을 전달해야한다.)
+			 *   
+			 * */
+			service = new UpdateServiceImpl();
+			service.execute(request, response);
+			String num = request.getParameter("num");
+			response.sendRedirect("content.board?num=" + num); //다시 컨트롤러로 보내준다.
+			
+		}else if(command.equals("/board/delete.board")) {
+			/*1. deleteServiceImpl을 생성
+			 *2. 서비스 영역에는 num을 받아서 delete()메서드를 실행
+			  3. DAO의 delete () 에서는 delete구문으로 삭제
+			  
+			 *4. 페이지 이동은 목록으로 처리  
+			 *	 추가) board_modify.jsp에서 사제를 자바스크립트를 이용하여
+			 *	확인하는 펑션 이용
+			 *	
+			 *  sql = "delete from board where num=?";
+			 *5. 
+			 */
+				service = new DeleteServiceImpl();
+				service.execute(request, response);
+				
+				response.sendRedirect("list.board");
+			
+		}
+	
 		}
 
 }

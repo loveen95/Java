@@ -32,7 +32,7 @@
 						<tr>
 							<td>${vo.num }</td>
 							<td>${vo.writer}</td>
-							<td><a href="#">${vo.title }</a> </td>
+							<td><a href="content.board?num=${vo.num}">${vo.title }</a> </td>
 							<td>${vo.regdate } </td>
 							<td>${vo.hit }</td>
 						</tr>
