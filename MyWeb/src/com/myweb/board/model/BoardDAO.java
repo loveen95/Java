@@ -10,6 +10,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import com.myweb.util.Criteria;
 import com.myweb.util.JdbcUtil;
 
 public class BoardDAO {
@@ -63,7 +64,7 @@ public class BoardDAO {
 		return result;
 	}
 	//게시물 목록 조회 리스트 
-	public ArrayList<BoardVO> getList() {
+	/*public ArrayList<BoardVO> getList() {
 		ArrayList<BoardVO> list = new ArrayList<>();
 	
 		String sql = "select * from board order by num desc";
@@ -94,7 +95,79 @@ public class BoardDAO {
 		}
 		return list;	
 	
+	} */
+	//페이징 게시물 목록 처리 메서드
+	public ArrayList<BoardVO> getList(Criteria cri){
+		ArrayList<BoardVO> list = new ArrayList<BoardVO>();
+		
+		String sql = "select * from "
+				+ "(select rownum as rnum, B.* from board B where rownum <=? order by num desc)"
+				+ " where ? <=rnum";
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, cri.getCount_oracle()); //몇개의 데이터 조회 끝부분
+			pstmt.setInt(2, cri.getPageStart()); //시작 번호
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+
+				int num = rs.getInt("num");
+				String writer = rs.getString("writer");
+				String title = rs.getString("title");
+				String content = rs.getString("content");
+				Timestamp regdate = rs.getTimestamp("regdate");
+				int hit = rs.getInt("hit");
+				
+				BoardVO vo = new BoardVO(num, writer, title, content, regdate, hit);
+				
+				list.add(vo);
+				
+				
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			JdbcUtil.close(conn, pstmt, rs);
+		}
+		
+
+		return list;  
 	}
+	
+	//총 게시물 수를 반환하는 메서드
+	
+	public int getTotal() {
+	
+		int result = 0;
+		
+		String sql = "select count(*) as total from board";
+		
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+	
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				result = rs.getInt("total");
+			}
+			System.out.println("총 게시물 갯수" + result);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			JdbcUtil.close(conn, pstmt, rs);
+		}
+		
+		
+		return result;
+		
+	}
+	
+	
 	public BoardVO getContent(String num) {
 		BoardVO vo = null;
 		
