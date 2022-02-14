@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+	<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	 
+	 <!-- 
+	 xmlns: 속성값은 네임스페이스로 태그를 식별하기 위한(bean) 이름 shcema/beans을 참조한다.
+	 xmlns:xsi : XML 정보를 가르키는 주소
+	 xsi:schemaLocation : 두개의 값이 공백으로 구분됨 . 첫번째는 네임스페이스 두번째는 참조할 네임스페이스 있는 주소(위치)
+	 
+	 
+	 
+	 
+	  -->
+	 
+	 <bean id="good" class="test01.SpringTest" /> <!-- SpringTest란 객체를 생성하지 않아도 loc의 빈에다가 저장이된다. -->
+
+	 <!-- DI테스트 -->
+	  <bean id="chef" class="test02_ex01.contruct.Chef" />
+	  <!-- 생성자 주입 -->
+	  <bean id="hotel" class="test02_ex01.contruct.Hotel" >
+	  	<constructor-arg ref="chef"></constructor-arg> <!-- 참조할때는 객체를 참조해야한다.호텔은 chef란 객체를 참조한다. -->
+	  </bean>
+	  
+	  <bean id="DBdev" class="test02.ex02.setter.DatabaseDev" >
+	  	<property name="url" value="jdbc:oracle:thin:@localhost:1521/XEPDB1" />
+	  	<property name="uid" value="myjsp" />
+	  	<property name="upw" value="myjsp" />
+	  </bean>
+	  
+	 
+	  
+	</beans>
