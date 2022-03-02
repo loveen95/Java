@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">	
+	
+	
+<mapper namespace="com.zerock.testmapper.TestMapper">   <!-- 인터페이스 경로까지 써야한다. -->
+	<select id="getTime" resultType="String"><!-- 메소드아이디랑 똑같이 해야한다. -->
+	  select sysdate from dual  <!-- sysdate() 괄호는 버전이 달라 필요없다  -->   
+	</select>
+
+</mapper>

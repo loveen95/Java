@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">	
+	
+	
+<mapper namespace="com.zerock.board.mapper.BoardMapper">  
+
+ <!-- 인터페이스 경로까지 써야한다. -->
+ <!-- 게시물 목록 -->
+	<select id="getList" resultType="com.zerock.board.command.BoardVO"><!-- 메소드아이디랑 똑같이 해야한다. -->
+	  select * from tbl_board order by num desc  <!-- sysdate() 괄호는 버전이 달라 필요없다  -->   
+	</select>
+	<!-- 게시물 등록 -->
+     <insert id="insertBoard">
+     insert into tbl_board(title,content,writer) values(#{title},#{content},#{writer})
+     </insert>
+     <!-- 게시물 상세 보기 -->
+     <!-- parameterType 구문에 전달될 타입 -->
+     <select id="getContent" parameterType="int" resultType="com.zerock.board.command.BoardVO"><!-- 메소드아이디랑 똑같이 해야한다. -->
+	  select * from tbl_board where num =#{num}  <!-- sysdate() 괄호는 버전이 달라 필요없다  -->   
+	</select>
+	<!-- 게시물 업데이트 -->
+	<update id="updateBoard">
+	UPDATE tbl_board set title = #{title}, content = #{content}, writer = #{writer}, dateupdate = now()
+		where num = #{num}
+	
+	</update>
+	<delete id="delete">
+		delete from tbl_board where num=#{num} 
+	</delete>
+	
+	<!-- 페이징 쿼리 -->
+	<select id="pagingList" resultType="com.zerock.board.command.BoardVO" 
+	parameterType="com.zerock.board.command.Criteria">	
+	<!--  select * from
+			(select rownum as rnum, B.* from tbl_board B 
+			where rownum &lt;= #{count_oracle} order by num desc)
+  			where #{pageStart} &lt;= rnum -->
+  		   select * from tbl_board order by num desc limit 0,10
+  	
+  <!--  	SELECT * FROM (SELECT rownum R, B.* FROM (SELECT * FROM tbl_board ORDER BY num DESC)
+  	 B WHERE #{count_oracle} >= rownum) WHERE R >= #{pageStart} order by R -->
+	
+	</select>
+	<select id="getTotal" resultType="int"> 
+		select count(*) from tbl_board
+	</select>
+
+
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:beans="http://www.springframework.org/schema/beans"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xmlns:aop="http://www.springframework.org/schema/aop"
+   xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+      http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+	
+
+	<!-- 설정파일 여러개 사용하기 1. web.xml에 새로운 설정파일 추가
+	                        2. servlet-context.xml설정 복사하기(생성 설정 순서가 중요하기때문)	                    
+	  -->
+	  <!-- 인터셉터 설정(servlet-xml과 동일한 설정파일에 합니다.) -->
+	  <!-- mapping태그의 요청이 들어오면 아래 bean 클래스를 실행  -->
+	
+	<!-- 1. 라이브러리 다운 -->
+	<!-- 2. namespace 추가 
+	xmlns:context="http://www.springframework.org/schema/context"
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		 3. aop스캔 설정 
+	-->
+	
+	<context:component-scan base-package="com.zerock.util"/>
+	
+	<!-- 이게 들어와 있어야 aop관련된 태그들을 인식 할 수 있다.  -->
+	<aop:aspectj-autoproxy/>
+	
+	<!--board에 대한 인터셉터 -->
+	<interceptors> 
+		<interceptor>
+ 			<mapping path="/session/updatePage"/>
+			<mapping path="/session/myPage"/>	
+			<beans:bean class="com.zerock.util.LoginInterceptor"></beans:bean>
+		</interceptor> 	
+	</interceptors>
+	
+    <!--Board에 대한 인터셉터 -->	
+	<interceptors> 
+		<interceptor>
+ 			<mapping path="/board/delete"/>
+			<mapping path="/board/update"/>
+			<mapping path="/board/modify"/>
+			<mapping path="/boatd/register"/> 	
+			<beans:bean class="com.zerock.util.BoardInterceptor"></beans:bean>
+		</interceptor> 	
+	</interceptors>
+	
+	
+</beans:beans>

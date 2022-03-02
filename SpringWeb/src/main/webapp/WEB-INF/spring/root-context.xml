@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- root-context.xml은 일반적으로 DB관련 설정이 들어간다. -->	
+	<!-- 기본적으로 classpath에 경로를 WEB_INF아래 classes폴더 경로를 잡도록 설정되어 있다. -->	
+	<!-- DB설정 파일을 작성한다면, classes 폴더경로를 기준으로 경로 설정을 하도록 한다.--> 
+	
+		
+	<!-- hikariCP빈으로 등록하기 -->		
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+		<property name="jdbcUrl" 
+		value="jdbc:mysql://localhost:3306/JSP?serverTimezone=Asia/Seoul"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="0000"></property>
+	</bean>
+	
+	<!-- dataSource 설정 -->
+	<bean id="ds" class="com.zaxxer.hikari.HikariDataSource">
+		<constructor-arg ref="hikariConfig"></constructor-arg> <!-- 인자값  -->
+	</bean>         
+	
+	
+	<!-- JDBC템플릿설정  -->  <!-- 데이터소스를 만든걸 스프링 템플릿에 넣는다.-->
+	<!-- jdbcTemplate사용을 위한 bean추가 -->
+	<!-- jdbcTemplate이름으로 객체생성 하며 의존주입(HikariCP설정으로 생성된 ds ) --> 
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+	<property name="dataSource" ref="ds"></property> 
+	</bean>  
+	
+	<!-- MyBatis의 사용의 핵심 객체 sessionFactory 추가 -->
+	<!-- SessionFactory는 내부적으로 DB와 연결해주고  pstmt의 SQL문을 바인딩 처리, 반복적인 close()를 작업또한 처리하여
+		개발자의 코드량을 줄이며 효율적으로 작업을 할 수 있게 도움을준다.
+	-->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    	<property name="dataSource" ref="ds" />
+    	<!-- <property name="mapperLocations" value="classpath:com/zerock/mapper/**/*.xml" /> -->
+	</bean>
+	<!-- MyBatis test 매퍼 스캔 -->
+	<mybatis-spring:scan base-package="com.zerock.board.mapper"/>	
+	<mybatis-spring:scan base-package="com.zerock.testmapper"/>	
+	<mybatis-spring:scan base-package="com.zerock.member.mapper"/>	
+	
+	<!-- MyBatis 의 mapper패키지를 scan하는 태그 -->
+	<!--  -->
+	
+	</beans>
+	
+	
+
+
+<!-- root-context는 부모격이다. 하나만 존재 할 수 있으며 servlet-context는 여러개 만들어서 사용할수 있다 -->
+     
